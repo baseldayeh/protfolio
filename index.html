@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basel Dayeh - Software Developer</title>
+    <!-- Chosen Palette: Warm Neutral (Seasalt background, Slate Gray text, Powder Blue accent) -->
+    <!-- Application Structure Plan: A single-page portfolio application with a sticky top navigation bar for seamless scrolling. The structure includes: 1. Hero section for immediate impact. 2. About section combining career objective and education. 3. Interactive Skills section with a bar chart for clear visualization. 4. Projects section using a card-based layout for organized presentation. 5. Experience section designed as a vertical timeline to narrate professional journey. 6. A simple footer for contact links. This structure was chosen to transform the linear CV into an engaging, non-linear explorative experience, allowing recruiters to quickly access the most relevant information. -->
+    <!-- Visualization & Content Choices: 
+        - Skills List -> Goal: Compare technical proficiency -> Viz: Horizontal Bar Chart (Chart.js) -> Interaction: Tooltips on hover show skill category -> Justification: Visually represents skill levels more effectively than a static list, making strengths immediately apparent.
+        - Experience/Education -> Goal: Show career chronology -> Viz: Vertical Timeline (HTML/Tailwind) -> Interaction: N/A (Visual structure is the key feature) -> Justification: Tells a compelling story of growth and progression over time, more engaging than bullet points.
+        - Projects -> Goal: Organize and showcase work -> Viz: Cards (HTML/Tailwind) -> Interaction: Clickable links with icons -> Justification: Cleanly separates project details and provides clear calls-to-action to view source code and designs.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #F8F9FA; /* Seasalt */
+            --text-color: #343A40; /* Slate Gray */
+            --primary-color: #6C757D; /* Gray */
+            --accent-color: #B0E0E6; /* Powder Blue */
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+        .section-title {
+            color: var(--text-color);
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            border: 3px solid var(--bg-color);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+    </style>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold text-gray-800">Basel Dayeh</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link text-gray-600 font-medium">About</a>
+                <a href="#skills" class="nav-link text-gray-600 font-medium">Skills</a>
+                <a href="#projects" class="nav-link text-gray-600 font-medium">Projects</a>
+                <a href="#experience" class="nav-link text-gray-600 font-medium">Experience</a>
+                <a href="#contact" class="nav-link text-gray-600 font-medium">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                 <span class="text-3xl">☰</span>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-200">About</a>
+            <a href="#skills" class="block py-2 px-4 text-sm hover:bg-gray-200">Skills</a>
+            <a href="#projects" class="block py-2 px-4 text-sm hover:bg-gray-200">Projects</a>
+            <a href="#experience" class="block py-2 px-4 text-sm hover:bg-gray-200">Experience</a>
+            <a href="#contact" class="block py-2 px-4 text-sm hover:bg-gray-200">Contact</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <section id="hero" class="text-center py-16">
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">Basel Abed Alhaleem Dayeh</h1>
+            <p class="text-xl md:text-2xl text-gray-600">Software Developer | Mobile, Web & UI/UX</p>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-16">
+            <h2 class="section-title text-3xl font-bold text-center mb-12">About Me</h2>
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
+                <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                    A highly motivated and passionate Computer Science student at the University of Jordan graduated in 2025 with a strong foundation in software development. Seeking a challenging entry-level position in Mobile Application Development, Web Development, or UI/UX Design where I can leverage my skills in Flutter, Firebase, and front-end technologies to contribute to innovative projects and grow professionally.
+                </p>
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-800">Education</h3>
+                    <p class="text-md text-gray-600">
+                        <span class="font-bold">Bachelor of Science in Computer Science</span> <br>
+                        University of Jordan - Amman, Jordan <br>
+                        Graduated: 2025
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-16 bg-white rounded-xl shadow-md">
+            <h2 class="section-title text-3xl font-bold text-center mb-12">Technical Skills</h2>
+            <div class="chart-container">
+                <canvas id="skillsChart"></canvas>
+            </div>
+            <p class="text-center text-sm text-gray-500 mt-4">This chart visualizes my proficiency across different technologies. Hover over bars for details.</p>
+        </section>
+        
+        <!-- Projects Section -->
+        <section id="projects" class="py-16">
+            <h2 class="section-title text-3xl font-bold text-center mb-12">Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8 max-w-4xl mx-auto">
+                <div class="card bg-white rounded-xl overflow-hidden shadow-md p-8">
+                    <h3 class="text-2xl font-bold mb-3 text-gray-800">JU-Scooter: Campus Electric Scooter Rental App</h3>
+                    <p class="text-gray-600 mb-4">Developed a comprehensive mobile application for a campus-based electric scooter rental service designed to provide an efficient and eco-friendly transportation alternative for students at the University of Jordan.</p>
+                    <div class="mb-4">
+                        <span class="font-semibold">Technologies:</span>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">Flutter</span>
+                            <span class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">Firebase</span>
+                            <span class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">Google Maps API</span>
+                            <span class="bg-pink-100 text-pink-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">Figma</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-start space-x-4 mt-6">
+                        <a href="https://github.com/baseldayeh/ju-scooter" target="_blank" class="text-gray-700 hover:text-black transition duration-300">
+                           <span class="text-2xl">💻</span> <span class="ml-1 font-semibold">Code</span>
+                        </a>
+                        <a href="https://www.figma.com/design/kCxY95qLjB9Dlq4g7WT1Wa/project" target="_blank" class="text-gray-700 hover:text-pink-500 transition duration-300">
+                           <span class="text-2xl">🎨</span> <span class="ml-1 font-semibold">Design</span>
+                        </a>
+                        <a href="https://docs.google.com/document/d/18gB4gmK15X-TVpvXn-vEednJ-fo5Tre_/" target="_blank" class="text-gray-700 hover:text-blue-500 transition duration-300">
+                           <span class="text-2xl">📄</span> <span class="ml-1 font-semibold">Docs</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-16">
+            <h2 class="section-title text-3xl font-bold text-center mb-16">My Journey</h2>
+            <div class="max-w-2xl mx-auto">
+                <div class="relative border-l-2 border-gray-200 pl-8">
+                    <!-- Timeline Item -->
+                    <div class="mb-12 timeline-item">
+                        <h3 class="text-xl font-semibold text-gray-800">Graduated</h3>
+                        <p class="text-sm text-gray-500 mb-2">2025</p>
+                        <p class="text-gray-700">Set to graduate from the University of Jordan with a B.S. in Computer Science.</p>
+                    </div>
+                     <!-- Timeline Item -->
+                    <div class="mb-12 timeline-item">
+                        <h3 class="text-xl font-semibold text-gray-800">Web Development Intern</h3>
+                        <p class="text-sm text-gray-500 mb-2">2025 at Classera</p>
+                        <p class="text-gray-700">Gained hands-on experience with HTML, CSS, and JavaScript.</p>
+                    </div>
+                    <!-- Timeline Item -->
+                    <div class="mb-12 timeline-item">
+                        <h3 class="text-xl font-semibold text-gray-800">Volunteering & Activities</h3>
+                        <p class="text-sm text-gray-500 mb-2">Ongoing</p>
+                        <p class="text-gray-700">Actively participated in student volunteer activities, workshops, and tech conferences to learn and network.</p>
+                    </div>
+                     <!-- Timeline Item -->
+                    <div class="timeline-item">
+                        <h3 class="text-xl font-semibold text-gray-800">Started University</h3>
+                        <p class="text-sm text-gray-500 mb-2">2021</p>
+                        <p class="text-gray-700">Began my academic journey in Computer Science at the University of Jordan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-white border-t border-gray-200">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <h2 class="text-2xl font-bold mb-4">Get In Touch</h2>
+            <p class="text-gray-600 mb-6">I'm currently seeking new opportunities. Feel free to reach out!</p>
+            <div class="flex justify-center items-center space-x-6">
+                <a href="mailto:baseldayeh@gmail.com" class="text-gray-600 hover:text-accent-color transition duration-300 text-lg font-medium">baseldayeh@gmail.com</a>
+                <a href="https://www.linkedin.com/in/basel-dayeh-69484a371/" target="_blank" class="text-gray-600 hover:text-blue-600 transition duration-300 text-lg font-medium">LinkedIn</a>
+                <a href="https://github.com/baseldayeh" target="_blank" class="text-gray-600 hover:text-black transition duration-300 text-lg font-medium">GitHub</a>
+            </div>
+             <p class="text-sm text-gray-400 mt-8">&copy; 2025 Basel Dayeh. Designed to impress.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close mobile menu when a link is clicked
+            const mobileNavLinks = mobileMenu.querySelectorAll('a');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Navigation scroll highlighting
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.onscroll = () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            
+            // Skills Chart
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            const skillsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Flutter', 'Firebase', 'HTML/CSS/JS', 'C++', 'Figma', 'Git/GitHub'],
+                    datasets: [{
+                        label: 'Proficiency',
+                        data: [70, 70, 80, 90, 90, 80],
+                        backgroundColor: [
+                            'rgba(66, 165, 245, 0.6)', // Flutter (Blue)
+                            'rgba(255, 202, 40, 0.6)', // Firebase (Yellow)
+                            'rgba(239, 83, 80, 0.6)',  // HTML/CSS/JS (Red)
+                            'rgba(41, 182, 246, 0.6)',  // C++ (Light Blue)
+                            'rgba(186, 104, 200, 0.6)',// Figma (Purple)
+                            'rgba(149, 117, 205, 0.6)' // Git (Deep Purple)
+                        ],
+                        borderColor: [
+                            'rgba(66, 165, 245, 1)',
+                            'rgba(255, 202, 40, 1)',
+                            'rgba(239, 83, 80, 1)',
+                            'rgba(41, 182, 246, 1)',
+                            'rgba(255, 138, 101, 1)',
+                            'rgba(186, 104, 200, 1)',
+                            'rgba(149, 117, 205, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        let value = context.parsed.x;
+                                        if (value >= 90) label += 'Proficient';
+                                        else if (value >= 80) label += 'Intermediate';
+                                        else if (value >= 70) label += 'Good';
+                                        else label += 'interested';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                             grid: {
+                                display: false
+                            },
+                            ticks: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                             ticks: {
+                                font: {
+                                    size: 14,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
